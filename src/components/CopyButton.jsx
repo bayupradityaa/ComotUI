@@ -37,9 +37,21 @@ export default function CopyButton({
   }, [value]);
 
   const base =
-    variant === "solid"
-      ? "border-[var(--border)] bg-[var(--surface-elevated)] text-[var(--secondary)] hover:border-[var(--border-strong)] hover:text-[var(--foreground)]"
-      : "border-transparent bg-transparent text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-elevated)]";
+    variant === "primary"
+      ? "border border-transparent bg-[var(--foreground)] text-[var(--background)] hover:bg-[var(--accent-hover)]"
+      : variant === "solid"
+        ? "border-[var(--border)] bg-[var(--surface-elevated)] text-[var(--secondary)] hover:border-[var(--border-strong)] hover:text-[var(--foreground)]"
+        : "border-transparent bg-transparent text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-elevated)]";
+
+  const copiedClass =
+    variant === "primary"
+      ? "bg-[var(--success)] text-white border-transparent"
+      : "bg-[var(--success-soft)] text-[var(--success)] border-[var(--success)]";
+
+  const sizeClass =
+    variant === "primary"
+      ? "h-10 rounded-lg px-5 text-sm font-semibold"
+      : "h-7 rounded-md px-2.5 text-[12px] font-medium";
 
   return (
     <button
@@ -48,12 +60,13 @@ export default function CopyButton({
       title={title ?? copied ? copiedLabel : label}
       aria-live="polite"
       className={cn(
-        "inline-flex h-7 items-center gap-1.5 rounded-md border px-2.5 text-[12px] font-medium transition-colors duration-150",
-        copied ? "bg-[var(--success-soft)] text-[var(--success)] border-[var(--success)]" : base,
+        "inline-flex items-center gap-1.5 border transition-colors duration-150",
+        sizeClass,
+        copied ? copiedClass : base,
         className,
       )}
     >
-      {copied ? <Check size={13} /> : <Copy size={13} />}
+      {copied ? <Check size={13} /> : <Copy size={variant === "primary" ? 15 : 13} />}
       {copied ? copiedLabel : label}
     </button>
   );

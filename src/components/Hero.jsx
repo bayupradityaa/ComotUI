@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import GithubIcon, { GITHUB_REPO } from "../lib/github";
+import { BRAND } from "../lib/brand";
 import HeroCodeEditor from "./HeroCodeEditor";
 
 export default function Hero() {
@@ -64,6 +65,23 @@ export default function Hero() {
                 ),
               )}
             </ul>
+
+            {/* Brand signature — the three-step workflow. Each word lifts
+                gently on hover; reduced-motion users get a static read. */}
+            <p className="mt-8 text-[13px] font-semibold tracking-[-0.01em] text-[var(--secondary)]">
+              {BRAND.tagline.split(" ").map((word, i) => (
+                <span key={i} className="group/tagline inline-block">
+                  <span
+                    className="inline-block transition-transform duration-150 ease-out motion-reduce:transition-none group-hover/tagline:-translate-y-px"
+                  >
+                    {word}
+                  </span>
+                  {i < BRAND.tagline.split(" ").length - 1 && (
+                    <span aria-hidden="true" className="block">{" "}</span>
+                  )}
+                </span>
+              ))}
+            </p>
           </div>
 
           {/* RIGHT — code → interface build animation */}

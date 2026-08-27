@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import Logo from "./Logo";
 import GithubIcon, { GITHUB_REPO, GITHUB_PROFILE } from "../lib/github";
+import { BRAND } from "../lib/brand";
 
 export default function Footer() {
   return (
@@ -15,7 +16,7 @@ export default function Footer() {
               </span>
             </Link>
             <p className="mt-2 text-[13px] text-[var(--secondary)]">
-              Comot. Copy. Build.
+              {BRAND.tagline}
             </p>
           </div>
 

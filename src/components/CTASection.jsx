@@ -1,4 +1,5 @@
 import GithubIcon, { GITHUB_REPO } from "../lib/github";
+import { BRAND } from "../lib/brand";
 
 export default function CTASection() {
   return (
@@ -9,7 +10,7 @@ export default function CTASection() {
         </h2>
         <p className="mx-auto mt-2 max-w-md text-sm text-[var(--secondary)]">
           Every component here belongs to the community. Open a PR with your
-          best component and drop it into the registry.
+          best work and let others {BRAND.tagline.split(" ")[0].toLowerCase()} it too.
         </p>
         <a
           href={`${GITHUB_REPO}/issues`}

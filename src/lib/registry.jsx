@@ -8,6 +8,12 @@ import statusBadgeSource from "../components/ui/StatusBadge.jsx?raw";
 import receiptPrinterTs from "./tsSources/receipt-printer.tsx.txt?raw";
 import statusBadgeTs from "./tsSources/status-badge.tsx.txt?raw";
 
+// { GITHUB_REPO }/blob/main/<path>. Each component points at the file that
+// holds its source so "View source on GitHub" is always real. Components that
+// share a file (compound/demo previews re-export the UI source) point at the
+// canonical implementation file.
+import { GITHUB_REPO } from "./github";
+
 export const CATEGORIES = [
   "All",
   "Buttons",
@@ -32,7 +38,9 @@ export const components = [
     framework: "React",
     styling: "Tailwind",
     dependencies: ["lucide-react", "framer-motion"],
-    component: ReceiptSnapshot,
+    component: ReceiptSnapshot, // compact still for grid/library tiles
+    previewLive: lazy(() => import("../components/LiveReceiptDemo")), // live loop for the detail page
+    githubUrl: `${GITHUB_REPO}/blob/main/src/components/ui/ReceiptPrinter.jsx`,
     featured: true,
     preview: { height: "360px" },
     source: receiptPrinterSource,
@@ -86,6 +94,8 @@ function CheckoutReceipt() {
     styling: "Tailwind",
     dependencies: [],
     component: lazy(() => import("../demo/StatusBadgeDemo.jsx")),
+    previewLive: lazy(() => import("../demo/StatusBadgeLiveDemo.jsx")), // live loop for the detail page
+    githubUrl: `${GITHUB_REPO}/blob/main/src/components/ui/StatusBadge.jsx`,
     featured: false,
     preview: { height: "240px" },
     source: statusBadgeSource,
