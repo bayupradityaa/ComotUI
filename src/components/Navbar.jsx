@@ -4,6 +4,7 @@ import Logo from "./Logo";
 import SearchCommand from "./SearchCommand";
 import ThemeToggle from "./ThemeToggle";
 import GithubIcon, { GITHUB_PROFILE, GITHUB_REPO } from "../lib/github";
+import { useLenis } from "../lib/lenis";
 import { cn } from "../lib/utils";
 
 const NAV_LINKS = [
@@ -14,6 +15,17 @@ const NAV_LINKS = [
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const lenis = useLenis();
+
+  const scrollToComponents = () => {
+    const target = document.getElementById("components");
+    if (!target) return;
+    if (lenis) {
+      lenis.scrollTo(target, { offset: -64, duration: 1.1 });
+    } else {
+      target.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   const navClass = ({ isActive }) =>
     cn(
@@ -41,19 +53,10 @@ export default function Navbar() {
 
         <div className="ml-auto flex items-center gap-2">
           <div className="hidden sm:block">
-            <SearchCommand
-              onChange={() =>
-                document.getElementById("components")?.scrollIntoView({ behavior: "smooth" })
-              }
-            />
+            <SearchCommand onChange={scrollToComponents} />
           </div>
           <div className="sm:hidden">
-            <SearchCommand
-              variant="icon"
-              onChange={() =>
-                document.getElementById("components")?.scrollIntoView({ behavior: "smooth" })
-              }
-            />
+            <SearchCommand variant="icon" onChange={scrollToComponents} />
           </div>
 
           <a

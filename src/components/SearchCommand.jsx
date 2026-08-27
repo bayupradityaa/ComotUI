@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { CornerRightUp, Search, Square, SearchX } from "lucide-react";
 import { getCategories, components } from "../lib/registry";
+import { useLenis } from "../lib/lenis";
 import { cn } from "../lib/utils";
 
 const easeOut = [0.16, 1, 0.3, 1];
@@ -33,6 +34,15 @@ export default function SearchCommand({ variant = "input" }) {
   const inputRef = useRef(null);
   const listRef = useRef(null);
   const [active, setActive] = useState(0);
+  const lenis = useLenis();
+
+  // When the palette is open, freeze background scroll. Lenis ignores native
+  // overflow locking, so we stop/start it directly.
+  useEffect(() => {
+    if (open) lenis?.stop();
+    else lenis?.start();
+    return () => lenis?.start();
+  }, [open, lenis]);
 
   useEffect(() => {
     const onKey = (e) => {
