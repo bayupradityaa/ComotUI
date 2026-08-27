@@ -1,96 +1,104 @@
-# 🖨️ Receipt Printer UI
+# 🔗 ComotUI — Comot. Copy. Build.
 
-An interactive receipt printer UI component built with **React**, **Framer Motion**, and **Tailwind CSS**. Features a realistic stepped paper-feed animation, zigzag tearing effect, cutter blade flash, and a compound component API.
+A collection of crafted React UI components, ready to **comot** (grab) for your next project. Homepage at [comotui.my.id](https://comotui.my.id).
 
-## ✨ Features
+**Discover → Preview → Comot → Build.**
 
-- **Stepped Paper Feed** — Receipt paper emerges from the printer slot with a rhythmic, realistic feeding motion
-- **Tear Effect** — Zigzag clip-path transition simulates paper being torn from the printer
-- **Cutter Blade Flash** — Amber flash effect across the printer slot during the tearing phase
-- **Compound Component API** — Composable `ReceiptPrinter.Root`, `.Machine`, `.Screen`, `.Output`, `.Paper`, etc.
-- **Accessibility** — Respects `prefers-reduced-motion` via Framer Motion's `useReducedMotion`
-- **Interactive Demo** — Built-in replay button and stage indicator pills
+## ✨ What it is
+
+ComotUI is a developer-first React UI component library. The pattern:
+
+1. **Discover** a component
+2. **Preview** it live (real components, not screenshots)
+3. **Comot** the code you need — source, install, and usage
+
+The current flagship component is the **Receipt Printer** — an interactive POS receipt-printing interface with realistic stepped paper-feed, zigzag tearing, and a cutter blade flash.
+
+## 🖥️ Routes
+
+| Route | Purpose |
+|-------|---------|
+| `/` | Homepage (hero + featured preview + browse) |
+| `/components` | Component explorer with category filter |
+| `/components/:slug` | Component detail — live preview, source code, install, usage |
+
+Deep links work because `vercel.json` rewrites all paths to the SPA shell.
 
 ## 🚀 Quick Start
 
 ```bash
-# Clone the repo
-git clone https://github.com/YOUR_USERNAME/struk-order-ui.git
-cd struk-order-ui
-
-# Install dependencies
+git clone https://github.com/bayupradityaa/comotui.git
+cd ComotUI
 npm install
-
-# Start dev server
 npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173) to see the interactive demo.
+Open [http://localhost:5173](http://localhost:5173).
 
 ## 🏗️ Project Structure
 
 ```
 src/
+├── App.jsx                          # Router shell (Navbar + routes + Footer)
+├── pages/
+│   ├── Home.jsx                     # Homepage composition
+│   ├── ComponentExplorer.jsx        # /components
+│   └── ComponentDetail.jsx          # /components/:slug
 ├── components/
-│   └── ui/
-│       └── ReceiptPrinter.jsx    # Main compound component
-├── demo/
-│   ├── DemoReceipt.jsx           # Demo with dummy data & replay
-│   └── CodeViewer.jsx            # Source code viewer with syntax highlighting
+│   ├── Navbar.jsx                   # Sticky nav + ⌘K search dialog
+│   ├── SearchCommand.jsx            # Command palette (components + categories)
+│   ├── ThemeToggle.jsx              # Light / Dark / System
+│   ├── ComponentCard.jsx            # Grid tile → detail page
+│   ├── ComponentGrid.jsx            # Responsive grid + "coming soon" tile
+│   ├── FeaturedSection.jsx          # Live receipt preview on home
+│   ├── LiveReceiptDemo.jsx          # Interactive printer demo
+│   ├── CopyButton.jsx               # Idle → Copied feedback
+│   ├── Hero.jsx / Footer.jsx / CTASection.jsx
+│   ├── code/CodeViewer.jsx          # Syntax-highlighted source viewer
+│   ├── ui/                          # ★ Real reusable components
+│   │   ├── ReceiptPrinter.jsx
+│   │   └── StatusBadge.jsx
+│   └── demo/                        # Preview fixtures
 ├── lib/
-│   └── utils.js                  # Utility functions (cn, formatCurrency)
-├── App.jsx                       # Layout: demo + code viewer
-├── App.css                       # (unused, styles in index.css)
-├── index.css                     # Global styles + Tailwind
-└── main.jsx                      # Entry point
+│   ├── registry.jsx                 # ★ Component registry (single source of truth)
+│   ├── github.jsx                   # GitHub identity
+│   └── utils.js                     # cn(), formatting
+└── hooks/useTheme.js                # Light / dark / system resolution
 ```
 
-## 🧩 Component API
+## 🔌 Component registry
 
-```jsx
-<ReceiptPrinter.Root stage={stage} feedMotion="stepped">
-  <ReceiptPrinter.Machine>
-    <ReceiptPrinter.Header>
-      {/* Logo, buttons, etc. */}
-    </ReceiptPrinter.Header>
-    <ReceiptPrinter.Screen>
-      {/* LED-like display content */}
-      <ReceiptPrinter.Status />
-    </ReceiptPrinter.Screen>
-  </ReceiptPrinter.Machine>
+The single source of truth lives in `src/lib/registry.jsx`. Add a component here
+and the homepage grid, search palette, and detail page all pick it up — no page
+rewriting needed. Source is imported via Vite `?raw` so the Code tab always shows
+the **real** component source.
 
-  <ReceiptPrinter.Output>
-    <ReceiptPrinter.Paper>
-      {/* Receipt content */}
-    </ReceiptPrinter.Paper>
-  </ReceiptPrinter.Output>
-</ReceiptPrinter.Root>
+```ts
+{
+  slug: "receipt-printer",
+  name: "Receipt Printer",
+  category: "Commerce",
+  description: "…",
+  framework: "React",
+  styling: "Tailwind",
+  dependencies: ["lucide-react", "framer-motion"],
+  component: ReceiptPrinter,
+  source: receiptPrinterSource,   // ?raw import → real code
+  usage: "<ReceiptPrinter />",
+  installation: "npm install lucide-react framer-motion",
+  featured: true,
+}
 ```
 
-### Props
+To add a new component: **create the component → add metadata → run `?raw` source → register it.** Grid, search, and detail page handle the rest.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `stage` | `"processing" \| "printing" \| "tearing" \| "complete"` | — | Current animation stage |
-| `feedMotion` | `"stepped" \| "smooth"` | `"stepped"` | Paper feed animation style |
-| `animate` | `boolean` | `true` | Enable/disable animations |
+## 🎨 Design
 
-### Animation Stages
-
-1. **Processing** — Spinner icon, receipt hidden inside printer
-2. **Printing** — Receipt feeds out with stepped motion
-3. **Tearing** — Scissors icon, shake effect, cutter blade flash
-4. **Complete** — Printer slides up and fades, receipt displayed with zigzag edges
-
-## 🛠️ Tech Stack
-
-- **React 19** — UI framework
-- **Framer Motion** — Animation library
-- **Tailwind CSS v4** — Utility-first styling
-- **Lucide React** — Icon library
-- **Prism.js** — Syntax highlighting (demo only)
-- **Vite** — Build tool
+- **Font:** Plus Jakarta Sans (JetBrains Mono for code)
+- **Palette:** neutral-first (light `#FCFCFD`) + deep-navy dark (`#091540`), with a restrained blue accent
+- **Principles:** less decoration, more product — actual component previews over decorative graphics
+- **Dark mode:** developer-environment dark, persistent preference, system fallback
 
 ## 📄 License
 
-MIT — free to use, modify, and distribute.
+MIT

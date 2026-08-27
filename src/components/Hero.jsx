@@ -1,33 +1,54 @@
-import { ExternalLink } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import GithubIcon, { GITHUB_REPO } from "../lib/github";
 
-export default function Hero() {
+export default function Hero({ children }) {
   return (
-    <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 lg:py-24 text-center">
-      <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[var(--foreground)] leading-[1.1]">
-        Receipt Printer
-      </h1>
-      <p className="mt-6 text-base sm:text-lg text-[var(--secondary)] max-w-2xl mx-auto leading-relaxed">
-        An animated receipt printer component for React.
-      </p>
-      <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3">
-        <a
-          href="https://github.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-[var(--accent-contrast)] bg-[var(--accent)] rounded-lg
-            hover:bg-[var(--accent-hover)] transition-colors duration-150"
-        >
-          View source
-          <ExternalLink size={14} aria-hidden="true" />
-        </a>
-        <a
-          href="#playground"
-          className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-[var(--foreground)] bg-[var(--surface-elevated)] rounded-lg border border-[var(--border)]
-            hover:bg-[var(--surface)] hover:border-[var(--border-strong)] transition-all duration-150"
-        >
-          Try demo
-        </a>
+    <section className="border-b border-[var(--border)]">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 pt-16 pb-12 lg:pt-24">
+        <div className="mx-auto max-w-2xl text-center">
+          <span className="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-[11px] font-semibold tracking-[0.12em] text-[var(--muted)]">
+            OPEN SOURCE REACT UI COLLECTION
+          </span>
+
+          <h1 className="mt-5 text-[2.6rem] font-extrabold leading-[1.08] tracking-[-0.02em] text-[var(--foreground)] sm:text-6xl lg:text-7xl">
+            Comot the UI<br className="hidden sm:block" /> you need.
+          </h1>
+
+          <p className="mx-auto mt-5 max-w-xl text-[15px] leading-relaxed text-[var(--secondary)] sm:text-base">
+            A growing collection of carefully crafted React components you can
+            explore, customize, and copy into your next project.
+          </p>
+
+          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <a
+              href="#components"
+              className="group inline-flex h-10 items-center gap-2 rounded-lg bg-[var(--foreground)] px-5 text-sm font-semibold text-[var(--background)] transition-colors duration-150 hover:bg-[var(--accent-hover)]"
+            >
+              Browse Components
+              <ArrowRight size={15} className="transition-transform duration-150 group-hover:translate-x-0.5" />
+            </a>
+            <a
+              href={GITHUB_REPO}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex h-10 items-center gap-2 rounded-lg border border-[var(--border)] px-5 text-sm font-semibold text-[var(--foreground)] transition-all duration-150 hover:border-[var(--border-strong)] hover:bg-[var(--surface-elevated)]"
+            >
+              <GithubIcon size={15} />
+              View on GitHub
+            </a>
+          </div>
+
+          <div className="mt-9 flex flex-wrap items-center justify-center gap-x-5 gap-y-1.5 text-[12px] text-[var(--muted)]">
+            <span>✓ Free &amp; open source</span>
+            <span aria-hidden="true" className="text-[var(--border-strong)]">·</span>
+            <span>✓ React + Tailwind</span>
+            <span aria-hidden="true" className="text-[var(--border-strong)]">·</span>
+            <span>✓ Copy any component</span>
+          </div>
+        </div>
       </div>
+
+      {children}
     </section>
   );
 }

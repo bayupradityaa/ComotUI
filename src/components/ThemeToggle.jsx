@@ -11,8 +11,8 @@ const OPTIONS = [
 
 const easeOut = [0.16, 1, 0.3, 1];
 
-export default function ThemeToggle() {
-  const { theme, setTheme } = useTheme();
+export default function ThemeToggle({ onChange }) {
+  const { theme, resolved, setTheme } = useTheme();
   const [open, setOpen] = useState(false);
   const rootRef = useRef(null);
 
@@ -34,19 +34,38 @@ export default function ThemeToggle() {
 
   const active = OPTIONS.find((o) => o.value === theme);
   const ActiveIcon = active?.icon ?? Sun;
+  const isDark = resolved === "dark";
 
   return (
     <div ref={rootRef} className="relative">
+      <div className="flex items-center rounded-lg border border-[var(--border)] bg-[var(--surface)] shadow-[var(--shadow-1)]">
+      <button
+        type="button"
+        onClick={() => {
+          const next = isDark ? "light" : "dark";
+          setTheme(next);
+          onChange?.(next);
+        }}
+        aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+        title={isDark ? "Switch to light mode" : "Switch to dark mode"}
+        className="grid size-8 place-items-center rounded-l-lg text-[var(--secondary)] transition-colors duration-150 hover:text-[var(--foreground)]"
+      >
+        <ActiveIcon size={15} />
+      </button>
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
         aria-haspopup="menu"
         aria-expanded={open}
-        aria-label={`Theme: ${active?.label ?? "System"}. Change theme.`}
-        className="grid size-8 place-items-center rounded-lg border border-[var(--border)] bg-[var(--surface)] text-[var(--secondary)] transition-colors duration-150 hover:text-[var(--foreground)] hover:border-[var(--border-strong)]"
+        aria-label="Theme preferences"
+        title="Theme preferences"
+        className="grid size-7 place-items-center rounded-r-lg border-l border-[var(--border)] text-[var(--muted)] transition-colors duration-150 hover:text-[var(--foreground)]"
       >
-        <ActiveIcon size={16} />
+        <svg viewBox="0 0 16 16" width="10" height="10" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M3 6l5 5 5-5" />
+        </svg>
       </button>
+    </div>
 
       <AnimatePresence>
         {open && (
@@ -70,6 +89,7 @@ export default function ThemeToggle() {
                   onClick={() => {
                     setTheme(option.value);
                     setOpen(false);
+                    onChange?.(option.value === "system" ? "system" : option.value);
                   }}
                   className="flex w-full items-center gap-2 rounded-lg px-2.5 py-1.5 text-left text-[13px] text-[var(--secondary)] transition-colors duration-100 hover:bg-[var(--surface-elevated)] hover:text-[var(--foreground)] data-[selected=true]:text-[var(--foreground)]"
                   data-selected={selected}

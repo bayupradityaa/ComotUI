@@ -1,22 +1,23 @@
-import Header from "./components/Header";
-import Hero from "./components/Hero";
-import DemoLayout from "./components/DemoLayout";
-import Features from "./components/Features";
-import Installation from "./components/Installation";
-import Usage from "./components/Usage";
+import { Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import ScrollToTop from "./components/ScrollToTop";
+import Home from "./pages/Home";
+import ComponentExplorer from "./pages/ComponentExplorer";
+import ComponentDetail from "./pages/ComponentDetail";
 
 export default function App() {
   return (
     <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)] selection:bg-[var(--accent-soft)]">
-      <Header />
+      <ScrollToTop />
+      <Navbar />
 
-      <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <Hero />
-        <DemoLayout />
-        <Features />
-        <Installation />
-        <Usage />
+      <main>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/components" element={<ComponentExplorer />} />
+          <Route path="/components/:slug" element={<ComponentDetail />} />
+        </Routes>
       </main>
 
       <Footer />

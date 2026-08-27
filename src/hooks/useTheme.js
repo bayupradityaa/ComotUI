@@ -29,10 +29,17 @@ function applyTheme(theme) {
   root.classList.remove("dark", "light");
   root.classList.add(resolved);
   root.style.colorScheme = resolved;
+
+  try {
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute("content", resolved === "dark" ? "#080616" : "#F6F8FE");
+  } catch {
+    /* ignore */
+  }
 }
 
 export function useTheme() {
-  const [theme, setThemeState] = useState(() => readStoredTheme() ?? "dark");
+  const [theme, setThemeState] = useState(() => readStoredTheme() ?? "system");
 
   const setTheme = useCallback((next) => {
     setThemeState(next);

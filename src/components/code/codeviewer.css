@@ -1,0 +1,6 @@
+.ct-comment { color: var(--code-muted); font-style: italic; }
+.ct-string { color: var(--code-string); }
+.ct-keyword { color: var(--code-keyword); }
+.ct-function { color: var(--code-function); }
+.ct-number { color: var(--code-number); }
+.ct-plain { color: var(--code-fg); }
