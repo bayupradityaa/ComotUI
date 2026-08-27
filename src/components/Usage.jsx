@@ -64,7 +64,6 @@ export default function Usage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Basic */}
         <div className="rounded-lg border border-[var(--border)] bg-[var(--surface-elevated)] overflow-hidden">
           <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--border)] bg-[var(--surface)]">
             <span className="text-[11px] font-mono text-[var(--muted)]">Basic</span>
@@ -77,7 +76,6 @@ export default function Usage() {
           </div>
         </div>
 
-        {/* With Props */}
         <div className="rounded-lg border border-[var(--border)] bg-[var(--surface-elevated)] overflow-hidden">
           <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--border)] bg-[var(--surface)]">
             <span className="text-[11px] font-mono text-[var(--muted)]">With props</span>
@@ -91,7 +89,6 @@ export default function Usage() {
         </div>
       </div>
 
-      {/* Props table */}
       <div className="mt-8 overflow-x-auto">
         <table className="w-full text-sm border border-[var(--border)] rounded-lg overflow-hidden">
           <thead>

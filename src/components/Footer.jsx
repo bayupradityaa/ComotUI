@@ -1,4 +1,4 @@
-/* Inline GitHub SVG — lucide doesn't include brand icons */
+
 function GithubIcon({ size = 16, className }) {
   return (
     <svg

@@ -3,9 +3,8 @@ import { Copy, Check } from "lucide-react";
 import Prism from "prismjs";
 import "prismjs/components/prism-jsx";
 
-/* ─── Source code strings (loaded via Vite's ?raw import) ─── */
-import receiptPrinterSource from "../components/ui/ReceiptPrinter.jsx?raw";
-import demoReceiptSource from "./DemoReceipt.jsx?raw";
+import receiptPrinterSource from "./ui/ReceiptPrinter.jsx?raw";
+import playgroundSource from "./InteractivePlayground.jsx?raw";
 
 const CODE_TABS = [
   {
@@ -16,11 +15,11 @@ const CODE_TABS = [
     description: "Compound component with stepped-feed animation, tearing effect, and cutter blade flash.",
   },
   {
-    id: "demo-receipt",
-    label: "DemoReceipt.jsx",
-    filename: "demo/DemoReceipt.jsx",
-    code: demoReceiptSource,
-    description: "Demo wrapper with dummy data, auto-stage-advance, and replay button.",
+    id: "playground",
+    label: "InteractivePlayground.jsx",
+    filename: "components/InteractivePlayground.jsx",
+    code: playgroundSource,
+    description: "Interactive demo with dummy data, auto-stage-advance, and replay button.",
   },
 ];
 
@@ -33,7 +32,6 @@ function CopyButton({ text }) {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      // Fallback
       const textarea = document.createElement("textarea");
       textarea.value = text;
       document.body.appendChild(textarea);
@@ -88,18 +86,15 @@ export default function CodeViewer() {
       </div>
 
       <div className="rounded-lg border border-[var(--border)] bg-[var(--surface-elevated)] overflow-hidden">
-        {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 px-4 py-3 border-b border-[var(--border)] bg-[var(--surface)]">
           <div className="flex items-center gap-3">
             <span className="text-[11px] font-mono text-[var(--muted)]">{activeTabData?.filename}</span>
           </div>
-
           <div className="flex items-center gap-2">
             <CopyButton text={activeTabData?.code || ""} />
           </div>
         </div>
 
-        {/* Tabs */}
         <div className="flex border-b border-[var(--border)] bg-[var(--surface)] overflow-x-auto">
           {CODE_TABS.map((tab) => (
             <button
@@ -122,7 +117,6 @@ export default function CodeViewer() {
           ))}
         </div>
 
-        {/* Code block */}
         <div className="overflow-auto max-h-[500px] p-4 code-scroll">
           <pre className="!m-0 !p-0 !bg-transparent text-[12px] leading-relaxed !border-none">
             <code ref={codeRef} className="language-jsx">

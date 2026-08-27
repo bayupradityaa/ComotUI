@@ -31,12 +31,6 @@ function applyTheme(theme) {
   root.style.colorScheme = resolved;
 }
 
-/**
- * Dark / light / system theme management.
- * - Persists the raw preference ("dark" | "light" | "system") in localStorage
- * - Resolves "system" against prefers-color-scheme, live
- * - Applies the resolved theme as a class on <html> so CSS variables switch
- */
 export function useTheme() {
   const [theme, setThemeState] = useState(() => readStoredTheme() ?? "dark");
 
@@ -45,7 +39,6 @@ export function useTheme() {
     try {
       window.localStorage.setItem("rp-theme", next);
     } catch {
-      /* storage unavailable — theme still applies for this session */
     }
   }, []);
 
@@ -53,7 +46,6 @@ export function useTheme() {
     applyTheme(theme);
   }, [theme]);
 
-  // Re-resolve when the OS preference flips while in "system" mode
   useEffect(() => {
     if (theme !== "system") return;
     const mql = window.matchMedia("(prefers-color-scheme: light)");

@@ -3,18 +3,14 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { createContext, forwardRef, useContext } from "react";
 import { cn } from "../../lib/utils";
 
-/* ─── Context ─── */
 const ReceiptPrinterContext = createContext(null);
 
-/* ─── Premium Apple-style Smooth Easings ─── */
 const easeOutSmooth = [0.16, 1, 0.3, 1];
 const easeInOutSmooth = [0.65, 0, 0.35, 1];
 
-/* ─── Receipt teeth calculations ─── */
 const receiptToothCount = 36;
 const receiptToothDepth = 3.5;
 
-// Top teeth: left to right (from x=0% to x=100%)
 const topToothPoints = Array.from(
   { length: receiptToothCount * 2 + 1 },
   (_, index) => {
@@ -24,7 +20,6 @@ const topToothPoints = Array.from(
   },
 ).join(", ");
 
-// Bottom teeth: right to left (from x=100% to x=0%)
 const bottomToothPoints = Array.from(
   { length: receiptToothCount * 2 + 1 },
   (_, index) => {
@@ -34,13 +29,9 @@ const bottomToothPoints = Array.from(
   },
 ).join(", ");
 
-// Attached (flat top, zigzag bottom)
 const receiptClipPathAttached = `polygon(0 0, 100% 0, 100% calc(100% - ${receiptToothDepth}px), ${bottomToothPoints})`;
-
-// Torn (zigzag top AND zigzag bottom)
 const receiptClipPathTorn = `polygon(${topToothPoints}, 100% calc(100% - ${receiptToothDepth}px), ${bottomToothPoints})`;
 
-/* ─── Stepped-feed keyframes (Keluar berirama halus dari slot printer) ─── */
 const printingTransformKeyframes = [
   "translateY(calc(-100% + 4px))",
   "translateY(-90%)",
@@ -69,7 +60,6 @@ const printingKeyframeTimes = [
   0.66, 0.74, 0.77, 0.85, 0.88, 0.94, 0.96, 1,
 ];
 
-/* ─── Default status labels ─── */
 const statusLabels = {
   processing: "Memproses pesanan kamu...",
   printing: "Mencetak struk pesanan...",
@@ -77,7 +67,6 @@ const statusLabels = {
   complete: "Pesanan berhasil dibuat!",
 };
 
-/* ─── Hook ─── */
 function useReceiptPrinter(component) {
   const context = useContext(ReceiptPrinterContext);
   if (!context) {
@@ -86,7 +75,6 @@ function useReceiptPrinter(component) {
   return context;
 }
 
-/* ─── Root ─── */
 function ReceiptPrinterRoot({
   "aria-label": ariaLabel = "Receipt printer",
   animate = true,
@@ -121,7 +109,6 @@ function ReceiptPrinterRoot({
   );
 }
 
-/* ─── Machine (printer body) ─── */
 function ReceiptPrinterMachine({ children, className, ...props }) {
   const { stage, shouldMove } = useReceiptPrinter("ReceiptPrinter.Machine");
   const isTearing = stage === "tearing";
@@ -145,12 +132,10 @@ function ReceiptPrinterMachine({ children, className, ...props }) {
       {...props}
     >
       {children}
-      {/* Printer slot bar - tepat di celah keluar kertas */}
       <div
         aria-hidden="true"
         className="absolute inset-x-6 bottom-2 z-40 h-2.5 rounded-[0.25rem] border border-gray-600 bg-gray-950 shadow-[inset_0_2px_4px_rgba(0,0,0,0.95)] flex items-center justify-center overflow-hidden"
       >
-        {/* Cutter blade flash effect during tear */}
         {isTearing && (
           <motion.div
             initial={{ opacity: 0, scaleX: 0 }}
@@ -164,7 +149,6 @@ function ReceiptPrinterMachine({ children, className, ...props }) {
   );
 }
 
-/* ─── Header ─── */
 function ReceiptPrinterHeader({ children, className, ...props }) {
   return (
     <div
@@ -179,7 +163,6 @@ function ReceiptPrinterHeader({ children, className, ...props }) {
   );
 }
 
-/* ─── Screen (LED-like display) ─── */
 function ReceiptPrinterScreen({ children, className, ...props }) {
   return (
     <div
@@ -196,7 +179,6 @@ function ReceiptPrinterScreen({ children, className, ...props }) {
   );
 }
 
-/* ─── Status indicator (spinner → scissors → checkmark) ─── */
 function StatusIndicator({ animate, move, stage }) {
   const isComplete = stage === "complete";
   const isTearing = stage === "tearing";
@@ -261,7 +243,6 @@ function StatusIndicator({ animate, move, stage }) {
   );
 }
 
-/* ─── Status label ─── */
 function ReceiptPrinterStatus({ children, className, ...props }) {
   const { animate, shouldMove, stage } = useReceiptPrinter(
     "ReceiptPrinter.Status",
@@ -301,7 +282,6 @@ function ReceiptPrinterStatus({ children, className, ...props }) {
   );
 }
 
-/* ─── Paper (the receipt itself) ─── */
 const ReceiptPrinterPaper = forwardRef(function ReceiptPrinterPaper({ children, className, style, ...props }, ref) {
   const { stage } = useReceiptPrinter("ReceiptPrinter.Paper");
   const isTorn = stage === "tearing" || stage === "complete";
@@ -321,7 +301,6 @@ const ReceiptPrinterPaper = forwardRef(function ReceiptPrinterPaper({ children, 
   );
 });
 
-/* ─── Output (paper feed container - tepat tersambung di bawah slot bar) ─── */
 function ReceiptPrinterOutput({ children, className, ...props }) {
   const { animate, feedMotion, shouldMove, stage } = useReceiptPrinter(
     "ReceiptPrinter.Output",
@@ -344,7 +323,6 @@ function ReceiptPrinterOutput({ children, className, ...props }) {
       )}
       {...props}
     >
-      {/* Top slot blur shadow (only during printing when emerging from slot) */}
       {isReceiptVisible && !isComplete ? (
         <div
           aria-hidden="true"

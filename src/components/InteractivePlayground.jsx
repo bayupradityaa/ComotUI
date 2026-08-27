@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { RotateCcw } from "lucide-react";
-import { ReceiptPrinter } from "../components/ui/ReceiptPrinter";
+import { ReceiptPrinter } from "./ui/ReceiptPrinter";
 import { formatCurrency } from "../lib/utils";
 import { useEffect, useState, useCallback, useRef } from "react";
 

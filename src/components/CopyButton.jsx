@@ -9,7 +9,6 @@ export default function CopyButton({ text, className = "" }) {
     try {
       await navigator.clipboard.writeText(text);
     } catch {
-      // Fallback for non-secure contexts
       const textarea = document.createElement("textarea");
       textarea.value = text;
       textarea.style.position = "fixed";

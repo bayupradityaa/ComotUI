@@ -16,7 +16,6 @@ export default function ThemeToggle() {
   const [open, setOpen] = useState(false);
   const rootRef = useRef(null);
 
-  // Close the menu on outside click / Escape
   useEffect(() => {
     if (!open) return;
     function onPointerDown(event) {
