@@ -11,40 +11,42 @@
 .light {
   color-scheme: light;
 
-  --background: #f6f8fe;
+  --background: #f7f8fc;
   --surface: #ffffff;
-  --surface-elevated: #eef2fc;
-  --foreground: #091540;
-  --secondary: #3e4c77;
-  --muted: #7683a6;
+  --surface-elevated: #f1f3f8;
+  --foreground: #111936;
+  --secondary: #4b5878;
+  --muted: #687594;
 
-  --border: #d8e1f5;
-  --border-strong: #c1ccea;
+  --border: #d9deea;
+  --border-strong: #c7cfe1;
 
   --accent: #1b2cc1;
-  --accent-hover: #12209e;
-  --accent-soft: rgba(27, 44, 193, 0.08);
+  --accent-hover: #101c8e;
+  --accent-soft: rgba(27, 44, 193, 0.1);
   --accent-contrast: #ffffff;
 
   --success: #0f9d6c;
   --success-soft: rgba(15, 157, 108, 0.12);
   --warning: #b45309;
 
-  --code-bg: #0a1233;
-  --code-border: #d8e1f5;
-  --code-fg: #e6edff;
-  --code-muted: #7d8ec2;
-  --code-string: #8fd8a8;
-  --code-keyword: #b39dff;
-  --code-function: #9cb2ff;
-  --code-number: #ffc98a;
-  --code-tag: #ff9d9d;
+  /* Light code editor — a refined light theme instead of a dark slab.
+   * The editor reads white-on-light with restrained syntax accents. */
+  --code-bg: #ffffff;
+  --code-border: #d7ddea;
+  --code-fg: #26324d;
+  --code-muted: #8791a8;
+  --code-string: #1e6f5c;
+  --code-keyword: #6442c9;
+  --code-function: #1f5fd0;
+  --code-number: #a35d0f;
+  --code-tag: #b23a63;
 
-  --header-bg: rgba(246, 248, 254, 0.82);
-  --shadow-1: 0 1px 2px rgba(9, 21, 64, 0.06);
-  --shadow-2: 0 8px 24px -8px rgba(9, 21, 64, 0.14);
-  --shadow-receipt: 0 1px 2px rgba(9, 21, 64, 0.08),
-    0 12px 32px -8px rgba(9, 21, 64, 0.2), 0 32px 64px -24px rgba(9, 21, 64, 0.22);
+  --header-bg: rgba(247, 248, 252, 0.82);
+  --shadow-1: 0 1px 2px rgba(17, 25, 54, 0.06);
+  --shadow-2: 0 8px 24px -8px rgba(17, 25, 54, 0.12);
+  --shadow-receipt: 0 1px 2px rgba(17, 25, 54, 0.08),
+    0 12px 32px -8px rgba(17, 25, 54, 0.16), 0 32px 64px -24px rgba(17, 25, 54, 0.18);
 }
 
 .dark {

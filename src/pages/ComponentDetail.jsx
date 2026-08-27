@@ -140,7 +140,13 @@ export default function ComponentDetail() {
               {component.language || "jsx"}
             </span>
           </div>
-          <div className="relative flex min-h-[320px] items-center justify-center overflow-hidden px-4 py-8 sm:px-6">
+          <div
+            className="relative flex min-h-[320px] items-center justify-center overflow-hidden bg-[var(--background)] px-4 py-8 sm:px-6"
+            style={{
+              backgroundImage:
+                "radial-gradient(circle at 50% 46%, var(--accent-soft) 0%, transparent 62%)",
+            }}
+          >
             {component.slug === "receipt-printer" ? (
               <Suspense fallback={<div className="h-80" />}>
                 <LiveReceiptDemo className="w-full max-w-md" />
@@ -155,14 +161,8 @@ export default function ComponentDetail() {
 
         {/* Source pane */}
         <div className="min-w-0">
-          <div className="mb-3 flex items-center justify-between gap-3">
+          <div className="mb-3">
             <SourceToggle variant={variant} onChange={setVariant} />
-            <CopyButton
-              value={code}
-              label="Copy Code"
-              copiedLabel="Copied"
-              variant="solid"
-            />
           </div>
           <CodeViewer code={code} filename={fileName} language={language} />
         </div>
