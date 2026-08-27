@@ -1,11 +1,6 @@
-import { useState } from "react";
-import { RotateCcw } from "lucide-react";
 import { ReceiptPrinter } from "./ui/ReceiptPrinter";
+import { useAutoLoop } from "../hooks/useAutoLoop";
 import { formatCurrency } from "../lib/utils";
-
-const PROCESSING = 1500;
-const PRINTING = 3500;
-const TEARING = 600;
 
 const ORDER = {
   customer_name: "Budi Santoso",
@@ -22,16 +17,16 @@ const ORDER = {
   ].join("\n"),
 };
 
-const STAGES = [
-  { value: "processing", label: "Processing" },
-  { value: "printing", label: "Printing" },
-  { value: "tearing", label: "Tearing" },
-  { value: "complete", label: "Complete" },
+// Auto-loop: print → tear → complete → brief idle → repeat, so the demo
+// stays alive in the hero/detail previews. Completing and idling before
+// resetting keeps it readable rather than strobing.
+const LOOP = [
+  { value: "processing", hold: 1400 },
+  { value: "printing", hold: 3600 },
+  { value: "tearing", hold: 700 },
+  { value: "complete", hold: 2200 },
+  { value: "processing", hold: 900 },
 ];
-
-// Start in "complete" so the preview reads as a finished receipt rather than
-// replaying the whole print cycle on every page load.
-const INITIAL_STAGE = "complete";
 
 function DottedDivider() {
   return (
@@ -126,14 +121,8 @@ function PaperContent({ order, allSteps }) {
 }
 
 export default function LiveReceiptDemo({ className }) {
-  const [stage, setStage] = useState(INITIAL_STAGE);
-
-  const handleReplay = () => {
-    setStage("processing");
-    window.setTimeout(() => setStage("printing"), PROCESSING);
-    window.setTimeout(() => setStage("tearing"), PROCESSING + PRINTING);
-    window.setTimeout(() => setStage("complete"), PROCESSING + PRINTING + TEARING);
-  };
+  const loop = useAutoLoop(LOOP);
+  const stage = loop.state.value;
 
   return (
     <div className={className}>
@@ -182,32 +171,6 @@ export default function LiveReceiptDemo({ className }) {
         </ReceiptPrinter.Output>
       </ReceiptPrinter.Root>
 
-      <div className="flex items-center justify-center gap-3 pt-6">
-        {STAGES.map((s) => (
-          <button
-            key={s.value}
-            type="button"
-            onClick={() => setStage(s.value)}
-            aria-pressed={stage === s.value}
-            className="rounded-md px-2.5 py-1 text-[11px] font-medium transition-colors duration-150"
-            style={{
-              color: stage === s.value ? "var(--foreground)" : "var(--muted)",
-              background: stage === s.value ? "var(--accent-soft)" : "transparent",
-            }}
-          >
-            {s.label}
-          </button>
-        ))}
-        <button
-          type="button"
-          onClick={handleReplay}
-          aria-label="Replay print animation"
-          title="Replay"
-          className="grid size-7 place-items-center rounded-md border border-[var(--border)] text-[var(--secondary)] transition-colors duration-150 hover:text-[var(--foreground)]"
-        >
-          <RotateCcw size={13} />
-        </button>
       </div>
-    </div>
   );
 }

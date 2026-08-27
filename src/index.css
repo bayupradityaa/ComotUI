@@ -181,9 +181,59 @@ body {
   }
 }
 
+/* Live-preview micro-motions — quiet, looping states that make the mini
+ * interfaces feel rendered rather than drawn. Brand tokens only, low deltas. */
+
+/* soft breathing pulse for status dots / badges */
+@keyframes lvPulse {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* CTA arrow nudge — echoes the real site's hover affordance */
+@keyframes lvNudge {
+  0%,
+  72%,
+  100% {
+    transform: translateX(0);
+  }
+  82% {
+    transform: translateX(3px);
+  }
+}
+
+/* card selector cycling across a grid — reads as interaction, not decoration */
+@keyframes lvSelect {
+  0%,
+  18%,
+  33.4%,
+  100% {
+    border-color: var(--border-strong);
+    background: var(--surface);
+  }
+  8%,
+  26% {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-\[caret_1s_steps\(2\)_infinite\] {
     animation: none;
+  }
+
+  .lv-pulse,
+  .lv-nudge,
+  .lv-select {
+    animation: none !important;
   }
 }
 

@@ -5,6 +5,8 @@ import ReceiptSnapshot from "../demo/ReceiptSnapshot";
 // code viewer. Keeping these here centralises "what to show" with "the source".
 import receiptPrinterSource from "../components/ui/ReceiptPrinter.jsx?raw";
 import statusBadgeSource from "../components/ui/StatusBadge.jsx?raw";
+import receiptPrinterTs from "./tsSources/receipt-printer.tsx.txt?raw";
+import statusBadgeTs from "./tsSources/status-badge.tsx.txt?raw";
 
 export const CATEGORIES = [
   "All",
@@ -23,6 +25,8 @@ export const components = [
     slug: "receipt-printer",
     name: "Receipt Printer",
     category: "Commerce",
+    tags: ["receipt", "printing", "pos", "checkout", "thermal"],
+    status: "stable",
     description:
       "A compact receipt printing interface for modern POS systems, with a realistic stepped paper feed and tear animation.",
     framework: "React",
@@ -32,9 +36,27 @@ export const components = [
     featured: true,
     preview: { height: "360px" },
     source: receiptPrinterSource,
+    sourceTs: receiptPrinterTs,
     language: "jsx",
     fileName: "ReceiptPrinter.jsx",
+    fileNameTs: "ReceiptPrinter.tsx",
     usage: `import { ReceiptPrinter } from "./ReceiptPrinter";
+
+function CheckoutReceipt() {
+  return (
+    <ReceiptPrinter.Root stage="printing">
+      <ReceiptPrinter.Machine>
+        <ReceiptPrinter.Screen>
+          <ReceiptPrinter.Status />
+        </ReceiptPrinter.Screen>
+      </ReceiptPrinter.Machine>
+      <ReceiptPrinter.Output>
+        <ReceiptPrinter.Paper>{/* your receipt content */}</ReceiptPrinter.Paper>
+      </ReceiptPrinter.Output>
+    </ReceiptPrinter.Root>
+  );
+}`,
+    usageTs: `import { ReceiptPrinter } from "./ReceiptPrinter";
 
 function CheckoutReceipt() {
   return (
@@ -56,6 +78,8 @@ function CheckoutReceipt() {
     slug: "status-badge",
     name: "Status Badge",
     category: "Feedback",
+    tags: ["status", "badge", "indicator", "pill", "feedback"],
+    status: "stable",
     description:
       "A dependency-free status badge with semantic tones that adapt to light and dark themes.",
     framework: "React",
@@ -65,9 +89,23 @@ function CheckoutReceipt() {
     featured: false,
     preview: { height: "240px" },
     source: statusBadgeSource,
+    sourceTs: statusBadgeTs,
     language: "jsx",
     fileName: "StatusBadge.jsx",
+    fileNameTs: "StatusBadge.tsx",
     usage: `import StatusBadge from "./StatusBadge";
+
+function Dashboard() {
+  return (
+    <div className="flex gap-3">
+      <StatusBadge tone="success" label="Live" />
+      <StatusBadge tone="warning" label="Building" />
+      <StatusBadge tone="danger" label="Down" variant="outline" />
+      <StatusBadge tone="neutral" label="Paused" dot={false} />
+    </div>
+  );
+}`,
+    usageTs: `import StatusBadge, { type StatusBadgeProps } from "./StatusBadge";
 
 function Dashboard() {
   return (

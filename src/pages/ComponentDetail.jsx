@@ -5,6 +5,7 @@ import { getComponent, getAdjacent } from "../lib/registry";
 import CodeViewer from "../components/code/CodeViewer";
 import CopyButton from "../components/CopyButton";
 import LiveReceiptDemo from "../components/LiveReceiptDemo";
+import StatusBadgeLiveDemo from "../demo/StatusBadgeLiveDemo";
 import { cn } from "../lib/utils";
 
 function MetaBadge({ children }) {
@@ -15,38 +16,29 @@ function MetaBadge({ children }) {
   );
 }
 
-function SectionTitle({ children }) {
-  return (
-    <h2 className="text-lg font-bold tracking-tight text-[var(--foreground)]">
-      {children}
-    </h2>
-  );
-}
-
-function Tabs({ active, onChange }) {
+// React / TypeScript source switcher. Both variants are pre-authored in the
+// registry (source / sourceTs), so the viewer and the copy button always agree.
+function SourceToggle({ variant, onChange }) {
   return (
     <div
-      role="tablist"
-      aria-label="Preview and code"
+      role="group"
+      aria-label="Source language"
       className="inline-flex rounded-lg border border-[var(--border)] bg-[var(--surface)] p-0.5"
     >
-      {[
-        { id: "preview", label: "Preview" },
-        { id: "code", label: "Code" },
-      ].map((tab) => (
+      {["jsx", "tsx"].map((v) => (
         <button
-          key={tab.id}
-          role="tab"
-          aria-selected={active === tab.id}
-          onClick={() => onChange(tab.id)}
+          key={v}
+          type="button"
+          aria-pressed={variant === v}
+          onClick={() => onChange(v)}
           className={cn(
-            "rounded-md px-4 py-1.5 text-[13px] font-medium transition-colors duration-150",
-            active === tab.id
+            "rounded-md px-3 py-1 text-[12px] font-medium transition-colors duration-150",
+            variant === v
               ? "bg-[var(--surface-elevated)] text-[var(--foreground)] shadow-[var(--shadow-1)]"
               : "text-[var(--secondary)] hover:text-[var(--foreground)]",
           )}
         >
-          {tab.label}
+          {v === "jsx" ? "React" : "TypeScript"}
         </button>
       ))}
     </div>
@@ -84,14 +76,10 @@ function NextPrev({ prev, next }) {
   );
 }
 
-function CodeBlock({ code, filename, language }) {
-  return <CodeViewer code={code} filename={filename} language={language} />;
-}
-
 export default function ComponentDetail() {
   const { slug } = useParams();
   const component = getComponent(slug);
-  const [tab, setTab] = useState("preview");
+  const [variant, setVariant] = useState("jsx");
 
   if (!component) {
     return <Navigate to="/components" replace />;
@@ -100,8 +88,18 @@ export default function ComponentDetail() {
   const { prev, next } = getAdjacent(slug);
   const NoDeps = component.installation === "";
 
+  const isTs = variant === "tsx";
+  const code =
+    component.sourceTs && isTs ? component.sourceTs : component.source;
+  const fileName =
+    component.fileNameTs && isTs
+      ? component.fileNameTs
+      : component.fileName || `${component.slug}.jsx`;
+  const language = isTs ? "tsx" : component.language || "jsx";
+  const usageCode = component.usageTs && isTs ? component.usageTs : component.usage;
+
   return (
-    <div className="mx-auto max-w-4xl px-4 sm:px-6 py-8 lg:py-12">
+    <div className="mx-auto max-w-7xl px-4 sm:px-6 py-8 lg:py-12">
       {/* Breadcrumb */}
       <nav aria-label="Breadcrumb" className="mb-8 flex items-center gap-1.5 text-[13px] text-[var(--muted)]">
         <Link to="/components" className="transition-colors hover:text-[var(--foreground)]">
@@ -114,11 +112,11 @@ export default function ComponentDetail() {
       </nav>
 
       {/* Header */}
-      <header className="mb-10">
+      <header className="mb-8">
         <h1 className="text-3xl font-extrabold tracking-tight text-[var(--foreground)] sm:text-4xl">
           {component.name}
         </h1>
-        <p className="mt-3 max-w-xl text-[15px] text-[var(--secondary)]">
+        <p className="mt-3 max-w-2xl text-[15px] text-[var(--secondary)]">
           {component.description}
         </p>
 
@@ -129,43 +127,50 @@ export default function ComponentDetail() {
         </div>
       </header>
 
-      {/* Tabs */}
-      <div className="mb-4 flex items-center justify-between">
-        <Tabs active={tab} onChange={setTab} />
-        {tab === "code" && (
-          <CopyButton
-            value={component.source}
-            label="Copy Code"
-            copiedLabel="Copied"
-            variant="solid"
-          />
-        )}
+      {/* Live preview + full source, side by side on desktop */}
+      <div className="grid gap-6 lg:grid-cols-2 lg:items-start">
+        {/* Preview pane */}
+        <div className="relative flex flex-col overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--surface)]">
+          <div className="flex items-center justify-between border-b border-[var(--border)] px-4 py-2">
+            <span className="flex items-center gap-2 text-[11px] font-medium text-[var(--secondary)]">
+              <span aria-hidden="true" className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-400" />
+              Live preview
+            </span>
+            <span className="mono text-[10px] uppercase tracking-[0.08em] text-[var(--muted)]">
+              {component.language || "jsx"}
+            </span>
+          </div>
+          <div className="relative flex min-h-[320px] items-center justify-center overflow-hidden px-4 py-8 sm:px-6">
+            {component.slug === "receipt-printer" ? (
+              <Suspense fallback={<div className="h-80" />}>
+                <LiveReceiptDemo className="w-full max-w-md" />
+              </Suspense>
+            ) : (
+              <Suspense fallback={<div className="h-40" />}>
+                <StatusBadgeLiveDemo className="w-full max-w-md" />
+              </Suspense>
+            )}
+          </div>
+        </div>
+
+        {/* Source pane */}
+        <div className="min-w-0">
+          <div className="mb-3 flex items-center justify-between gap-3">
+            <SourceToggle variant={variant} onChange={setVariant} />
+            <CopyButton
+              value={code}
+              label="Copy Code"
+              copiedLabel="Copied"
+              variant="solid"
+            />
+          </div>
+          <CodeViewer code={code} filename={fileName} language={language} />
+        </div>
       </div>
 
-      {/* Preview pane */}
-      {tab === "preview" ? (
-        <div className="relative flex items-center justify-center overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 py-8 sm:px-6">
-          {component.slug === "receipt-printer" ? (
-            <Suspense fallback={<div className="h-80" />}>
-              <LiveReceiptDemo className="w-full max-w-md" />
-            </Suspense>
-          ) : (
-            <Suspense fallback={<div className="h-40" />}>
-              <component.component className="w-full" />
-            </Suspense>
-          )}
-        </div>
-      ) : (
-        <CodeBlock
-          code={component.source}
-          filename={component.fileName || `${component.slug}.jsx`}
-          language={component.language || "jsx"}
-        />
-      )}
-
       {/* Installation */}
-      <section className="mt-10">
-        <SectionTitle>Installation</SectionTitle>
+      <section className="mt-12">
+        <h2 className="text-lg font-bold tracking-tight text-[var(--foreground)]">Installation</h2>
         {NoDeps ? (
           <p className="mt-2 text-[13px] text-[var(--secondary)]">
             No additional dependencies required.
@@ -192,13 +197,13 @@ export default function ComponentDetail() {
       </section>
 
       {/* Usage */}
-      <section className="mt-10">
-        <SectionTitle>Usage</SectionTitle>
+      <section className="mt-12">
+        <h2 className="text-lg font-bold tracking-tight text-[var(--foreground)]">Usage</h2>
         <div className="mt-3">
-          <CodeBlock
-            code={component.usage}
-            filename={`usage.jsx`}
-            language="jsx"
+          <CodeViewer
+            code={usageCode}
+            filename={isTs ? "usage.tsx" : "usage.jsx"}
+            language={isTs ? "tsx" : "jsx"}
           />
         </div>
       </section>

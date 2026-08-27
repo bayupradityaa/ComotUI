@@ -14,12 +14,9 @@ export default function CodeViewer({
   const languageLabel = language === "tsx" ? "TSX" : language === "jsx" ? "JSX" : language.toUpperCase();
 
   return (
-    <div
-      className="overflow-hidden rounded-xl border border-[var(--border)]"
-      style={{ maxHeight: height }}
-    >
+    <div className="flex flex-col overflow-hidden rounded-xl border border-[var(--border)]">
       {/* Header bar */}
-      <div className="flex items-center justify-between border-b border-[var(--border)] bg-[var(--surface-elevated)] px-3 py-2">
+      <div className="flex shrink-0 items-center justify-between border-b border-[var(--border)] bg-[var(--surface-elevated)] px-3 py-2">
         <div className="flex items-center gap-2">
           <span className="text-[11px] font-medium text-[var(--secondary)]">
             {filename}
@@ -31,8 +28,11 @@ export default function CodeViewer({
         <CopyButton value={code} label="Copy" copiedLabel="Copied" variant="subtle" />
       </div>
 
-      {/* Code body */}
-      <div className="code-scroll overflow-auto bg-[var(--code-bg)] custom-scrollbar">
+      {/* Code body — clamped height lives HERE so long source actually scrolls */}
+      <div
+        className="code-scroll overflow-auto bg-[var(--code-bg)] custom-scrollbar"
+        style={{ maxHeight: height, minHeight: height }}
+      >
         <pre className="px-0 py-3 text-[13px] leading-[1.7] font-mono text-[var(--code-fg)]">
           <code>
             <table className="border-collapse">

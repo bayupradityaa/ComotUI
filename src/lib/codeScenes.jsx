@@ -67,7 +67,15 @@ const READY_TEXT = "Ready to comot"; // brand signature microcopy
 function AppPreview() {
   return (
     <div className="flex w-full flex-col gap-1">
-      <div className="h-6 rounded-t-md border border-b-0 border-[var(--border-strong)] bg-[var(--surface-elevated)]" />
+      {/* navbar bar with a "live" status dot */}
+      <div className="flex h-6 items-center justify-between rounded-t-md border border-b-0 border-[var(--border-strong)] bg-[var(--surface-elevated)] px-1.5">
+        <span className="size-1.5 rounded-full bg-[var(--accent)] [animation:lvPulse_2.4s_ease-in-out_infinite]" />
+        <span className="flex gap-0.5">
+          {[0, 1].map((i) => (
+            <span key={i} className="h-1 w-3 rounded-full bg-[var(--border-strong)]" />
+          ))}
+        </span>
+      </div>
       <div className="rounded-md border border-[var(--border-strong)] bg-[var(--surface)] p-2">
         <div className="h-1.5 w-16 rounded-full bg-[var(--accent)]/70" />
         <div className="mt-1 h-2 w-24 rounded-full bg-[var(--foreground)]/60" />
@@ -75,7 +83,11 @@ function AppPreview() {
       </div>
       <div className="grid grid-cols-3 gap-1">
         {[0, 1, 2].map((i) => (
-          <div key={i} className="h-5 rounded-md border border-[var(--border-strong)] bg-[var(--surface)]" />
+          <div
+            key={i}
+            className="h-5 rounded-md border border-[var(--border-strong)] bg-[var(--surface)] [animation:lvSelect_6s_ease-in-out_infinite]"
+            style={{ animationDelay: `${i * 2}s` }}
+          />
         ))}
       </div>
     </div>
@@ -85,14 +97,19 @@ function AppPreview() {
 function HeroPreview() {
   return (
     <div className="flex w-full flex-col gap-1.5 px-1 py-1">
-      <span className="w-fit rounded border border-[var(--border-strong)] px-1.5 py-px text-[7px] font-semibold tracking-wide text-[var(--muted)]">
+      <span className="flex w-fit items-center gap-1 rounded border border-[var(--border-strong)] px-1.5 py-px text-[7px] font-semibold tracking-wide text-[var(--muted)]">
+        <span
+          className="size-1 rounded-full bg-emerald-500 [animation:lvPulse_2s_ease-in-out_infinite]"
+          aria-hidden="true"
+        />
         OPEN SOURCE REACT UI
       </span>
       <p className="text-[11px] font-extrabold leading-tight text-[var(--foreground)]">
         Comot the UI<br />you need.
       </p>
-      <span className="inline-flex w-fit items-center rounded-md bg-[var(--foreground)] px-2 py-0.5 text-[8px] font-semibold text-[var(--background)]">
-        Browse Components →
+      <span className="inline-flex w-fit items-center gap-1 rounded-md bg-[var(--foreground)] px-2 py-0.5 text-[8px] font-semibold text-[var(--background)]">
+        Browse Components
+        <span aria-hidden="true" className="[animation:lvNudge_3.2s_ease-in-out_infinite]">→</span>
       </span>
     </div>
   );
@@ -101,8 +118,12 @@ function HeroPreview() {
 function GridPreview() {
   return (
     <div className="grid w-full grid-cols-3 gap-1.5">
-      {["Button", "Card", "Badge"].map((name) => (
-        <div key={name} className="overflow-hidden rounded-md border border-[var(--border-strong)]">
+      {["Button", "Card", "Badge"].map((name, i) => (
+        <div
+          key={name}
+          className="overflow-hidden rounded-md border border-[var(--border-strong)] [animation:lvSelect_6s_ease-in-out_infinite]"
+          style={{ animationDelay: `${i * 2}s` }}
+        >
           <div className="h-4 border-b border-[var(--border)] bg-[var(--surface-elevated)]" />
           <div className="bg-[var(--surface)] px-1 py-0.5">
             <p className="text-[7px] font-semibold text-[var(--secondary)]">{name}</p>
@@ -120,7 +141,13 @@ function CommunityPreview() {
         Have something worth sharing?
       </p>
       <span className="inline-flex items-center gap-1 rounded-md border border-[var(--border-strong)] px-2 py-0.5 text-[8px] font-medium text-[var(--secondary)]">
-        ♥ Contribute
+        <span
+          aria-hidden="true"
+          className="text-[7px] text-red-500 [animation:lvPulse_1.8s_ease-in-out_infinite]"
+        >
+          ♥
+        </span>
+        Contribute
       </span>
     </div>
   );
