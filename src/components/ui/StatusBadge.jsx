@@ -1,33 +1,47 @@
-import { cn } from "../../lib/utils";
+/**
+ * StatusBadge — a small, fully self-contained status pill.
+ *
+ * Zero dependencies beyond React + Tailwind. Copy this file into your project
+ * as-is — no site helpers or CSS variables required. It adapts to light and
+ * dark mode via Tailwind's `dark:` variant (a no-op if you only ship one mode).
+ */
 
-// Dependency-free status badge. Colors map to the app's semantic tokens so the
-// badge adapts automatically to light and dark themes.
+export function cn(...inputs) {
+  return inputs.filter(Boolean).join(" ");
+}
 
 const tones = {
-  success: { fg: "text-emerald-600 dark:text-emerald-400", bg: "bg-emerald-500" },
-  warning: { fg: "text-amber-600 dark:text-amber-400", bg: "bg-amber-500" },
-  danger: { fg: "text-red-600 dark:text-red-400", bg: "bg-red-500" },
-  neutral: { fg: "text-[var(--secondary)]", bg: "bg-[var(--muted)]" },
+  success: { fg: "text-emerald-700 dark:text-emerald-300", bg: "bg-emerald-500" },
+  warning: { fg: "text-amber-700 dark:text-amber-300", bg: "bg-amber-500" },
+  danger: { fg: "text-red-700 dark:text-red-300", bg: "bg-red-500" },
+  neutral: { fg: "text-slate-600 dark:text-slate-300", bg: "bg-slate-400" },
 };
 
 export default function StatusBadge({
   tone = "neutral",
+  variant = "soft",
   dot = true,
   label,
   className,
 }) {
   const t = tones[tone] ?? tones.neutral;
+  const isOutline = variant === "outline";
 
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-md border border-[var(--border)] bg-[var(--surface-elevated)] px-2 py-0.5 text-xs font-medium",
-        t.fg,
+        "inline-flex items-center gap-1.5 rounded-md border px-2 py-0.5 text-xs font-medium leading-4",
+        isOutline
+          ? "border-slate-200 text-slate-600 dark:border-slate-700 dark:text-slate-300"
+          : cn("border-transparent", t.fg),
+        isOutline && dot ? cn(t.bg, "opacity-60") : null,
         className,
       )}
     >
-      {dot && <span aria-hidden="true" className={cn("size-1.5 rounded-full", t.bg)} />}
-      {label || "Status"}
+      {dot && (
+        <span aria-hidden="true" className={cn("size-1.5 rounded-full", t.bg)} />
+      )}
+      {label ?? "Status"}
     </span>
   );
 }

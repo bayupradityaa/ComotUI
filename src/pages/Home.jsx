@@ -6,10 +6,9 @@ import CTASection from "../components/CTASection";
 export default function Home() {
   return (
     <>
-      <Hero>
-        <FeaturedSection />
-      </Hero>
+      <Hero />
 
+      <FeaturedSection />
       <ComponentsSection />
       <CTASection />
     </>

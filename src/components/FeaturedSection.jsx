@@ -5,7 +5,7 @@ import Badge from "./Badge";
 
 export default function FeaturedSection() {
   return (
-    <section className="mx-auto max-w-6xl px-4 sm:px-6 pb-16 lg:pb-20">
+    <section className="mx-auto max-w-6xl px-4 pb-4 pt-10 sm:px-6 lg:pt-14">
       <div className="relative">
         {/* Live component preview card — real component, not a screenshot */}
         <div className="relative z-10 overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-[var(--shadow-2)]">

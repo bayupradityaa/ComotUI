@@ -158,6 +158,35 @@ body {
     "SF Mono", monospace;
 }
 
+/* Hero code-editor panel rotation — subtle fade + rise, no bounce */
+@keyframes heroPanelIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Typing caret — thin blink, steps() so it snaps like a terminal cursor */
+@keyframes caret {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-\[caret_1s_steps\(2\)_infinite\] {
+    animation: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

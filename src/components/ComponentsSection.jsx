@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { CATEGORIES, components } from "../lib/registry";
 import CategoryFilter from "./CategoryFilter";
 import ComponentGrid from "./ComponentGrid";
+import TearDivider from "./TearDivider";
 
 function filterByCategory(list, cat) {
   if (cat === "All") return list;
@@ -31,7 +32,7 @@ export default function ComponentsSection() {
         active={category}
         onSelect={setCategory}
       />
-      <hr className="mt-3 mb-6 border-[var(--border)]" />
+      <TearDivider className="group/tear mt-3 mb-6" />
 
       {isEmpty ? (
         <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] px-6 py-16 text-center">

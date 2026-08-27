@@ -70,7 +70,14 @@ function CheckoutReceipt() {
     usage: `import StatusBadge from "./StatusBadge";
 
 function Dashboard() {
-  return <StatusBadge tone="success" label="Live" />;
+  return (
+    <div className="flex gap-3">
+      <StatusBadge tone="success" label="Live" />
+      <StatusBadge tone="warning" label="Building" />
+      <StatusBadge tone="danger" label="Down" variant="outline" />
+      <StatusBadge tone="neutral" label="Paused" dot={false} />
+    </div>
+  );
 }`,
     installation: "", // no external dependencies
   },
@@ -83,6 +90,7 @@ export function getComponent(slug) {
 export function getFeatured() {
   return components.filter((c) => c.featured);
 }
+
 
 export function getAdjacent(slug) {
   const idx = components.findIndex((c) => c.slug === slug);

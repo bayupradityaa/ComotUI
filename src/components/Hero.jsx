@@ -1,54 +1,77 @@
+import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import GithubIcon, { GITHUB_REPO } from "../lib/github";
+import HeroCodeEditor from "./HeroCodeEditor";
 
-export default function Hero({ children }) {
+export default function Hero() {
   return (
-    <section className="border-b border-[var(--border)]">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 pt-16 pb-12 lg:pt-24">
-        <div className="mx-auto max-w-2xl text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-[11px] font-semibold tracking-[0.12em] text-[var(--muted)]">
-            OPEN SOURCE REACT UI COLLECTION
-          </span>
+    <section className="relative border-b border-[var(--border)]">
+      {/* extremely subtle radial vignette behind the editor column */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_72%_38%,var(--accent-soft),transparent)]"
+      />
 
-          <h1 className="mt-5 text-[2.6rem] font-extrabold leading-[1.08] tracking-[-0.02em] text-[var(--foreground)] sm:text-6xl lg:text-7xl">
-            Comot the UI<br className="hidden sm:block" /> you need.
-          </h1>
+      <div className="relative mx-auto max-w-6xl px-4 pb-14 pt-14 sm:px-6 lg:pb-20 lg:pt-[5.5rem]">
+        <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[42fr_58fr] lg:gap-10">
+          {/* LEFT — content */}
+          <div>
+            <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
+              Open source React UI collection
+            </span>
 
-          <p className="mx-auto mt-5 max-w-xl text-[15px] leading-relaxed text-[var(--secondary)] sm:text-base">
-            A growing collection of carefully crafted React components you can
-            explore, customize, and copy into your next project.
-          </p>
+            <h1 className="mt-4 font-extrabold leading-[1.06] tracking-[-0.02em] text-[var(--foreground)] text-[clamp(2.5rem,7vw,3.75rem)]">
+              Comot the UI
+              <br />
+              you need.
+            </h1>
 
-          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <a
-              href="#components"
-              className="group inline-flex h-10 items-center gap-2 rounded-lg bg-[var(--foreground)] px-5 text-sm font-semibold text-[var(--background)] transition-colors duration-150 hover:bg-[var(--accent-hover)]"
-            >
-              Browse Components
-              <ArrowRight size={15} className="transition-transform duration-150 group-hover:translate-x-0.5" />
-            </a>
-            <a
-              href={GITHUB_REPO}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex h-10 items-center gap-2 rounded-lg border border-[var(--border)] px-5 text-sm font-semibold text-[var(--foreground)] transition-all duration-150 hover:border-[var(--border-strong)] hover:bg-[var(--surface-elevated)]"
-            >
-              <GithubIcon size={15} />
-              View on GitHub
-            </a>
+            <p className="mt-5 max-w-[520px] text-[15px] leading-relaxed text-[var(--secondary)]">
+              A growing collection of carefully crafted React components you can
+              explore, customize, and copy into your next project.
+            </p>
+
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+              <Link
+                to="/components"
+                className="group inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-[var(--foreground)] px-5 text-sm font-semibold text-[var(--background)] transition-colors duration-150 hover:bg-[var(--accent-hover)]"
+              >
+                Browse Components
+                <ArrowRight
+                  size={15}
+                  aria-hidden="true"
+                  className="transition-transform duration-150 group-hover:translate-x-0.5"
+                />
+              </Link>
+              <a
+                href={GITHUB_REPO}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-[var(--border)] px-5 text-sm font-semibold text-[var(--foreground)] transition-colors duration-150 hover:border-[var(--border-strong)] hover:bg-[var(--surface-elevated)]"
+              >
+                <GithubIcon size={15} aria-hidden="true" />
+                GitHub
+              </a>
+            </div>
+
+            <ul className="mt-7 flex flex-col gap-1.5 text-[12px] text-[var(--muted)]">
+              {["Free & open source", "React + Tailwind", "Copy any component"].map(
+                (item) => (
+                  <li key={item} className="flex items-center gap-2">
+                    <span aria-hidden="true" className="text-[var(--success)]">✓</span>
+                    {item}
+                  </li>
+                ),
+              )}
+            </ul>
           </div>
 
-          <div className="mt-9 flex flex-wrap items-center justify-center gap-x-5 gap-y-1.5 text-[12px] text-[var(--muted)]">
-            <span>✓ Free &amp; open source</span>
-            <span aria-hidden="true" className="text-[var(--border-strong)]">·</span>
-            <span>✓ React + Tailwind</span>
-            <span aria-hidden="true" className="text-[var(--border-strong)]">·</span>
-            <span>✓ Copy any component</span>
+          {/* RIGHT — code → interface build animation */}
+          <div className="min-w-0">
+            <HeroCodeEditor />
           </div>
         </div>
       </div>
-
-      {children}
     </section>
   );
 }

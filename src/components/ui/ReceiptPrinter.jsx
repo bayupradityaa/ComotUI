@@ -1,7 +1,12 @@
 import { CheckCircle, Loader2, Scissors } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { createContext, forwardRef, useContext } from "react";
-import { cn } from "../../lib/utils";
+
+// Self-contained className combiner — no project helper needed so the file can
+// be copied straight into another codebase.
+function cn(...inputs) {
+  return inputs.filter(Boolean).join(" ");
+}
 
 const ReceiptPrinterContext = createContext(null);
 
